@@ -1,0 +1,26 @@
+1. Small file (741 record)
+    Loaded 741 flight records from m1u3a1\alg1\flights-small.csv
+    Quadratic scan execution time: 0 ms
+    Number of unique flights (quadratic): 44
+    Sort-and-sweep execution time: 0 ms
+    Number of unique flights (sort-and-sweep): 44
+    Map execution time: 0 ms
+    Number of unique flights (map): 44
+
+2. Larger file (30k records):
+    Loaded 30000 flight records from m1u3a1\alg1\flights-large.csv
+    Quadratic scan execution time: 24 ms
+    Number of unique flights (quadratic): 24
+    Sort-and-sweep execution time: 3 ms
+    Number of unique flights (sort-and-sweep): 24
+    Map execution time: 0 ms
+    Number of unique flights (map): 24
+
+3. Huge file (2M records)
+    Loaded 2000000 flight records from m1u3a1\alg1\flights-huge.csv
+    Quadratic scan execution time: 3419 ms
+    Number of unique flights (quadratic): 46
+    Sort-and-sweep execution time: 268 ms
+    Number of unique flights (sort-and-sweep): 46
+    Map execution time: 127 ms
+    Number of unique flights (map): 46

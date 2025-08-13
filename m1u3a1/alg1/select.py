@@ -90,6 +90,7 @@ def main():
 
     filename = sys.argv[1]
     flight_results = load_flights(filename)
+    print(f"Loaded {len(flight_results)} flight records from {filename}")
 
     _, elapsed_ms_quad = select_lowest_price_flights(flight_results)
     print(f"Quadratic scan execution time: {elapsed_ms_quad} ms")
