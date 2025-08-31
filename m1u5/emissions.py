@@ -28,6 +28,10 @@ import seaborn as sns
 #     - sys
 # Example:
 #     python emissions.py aviation_emissions.csv
+#
+# Data used for this work is freely available at https://ourworldindata.org/grapher/annual-co-emissions-from-aviation?tab=table
+# The comments for this code are generated using the GitHub Copilot. 
+# This work does not contain any other uses of generative AI.
 
 
 def loadData(filePath):
