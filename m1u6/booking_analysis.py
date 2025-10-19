@@ -67,8 +67,8 @@ RANDOM_STATE = 42
 
 # 1) Load two datasets and combine
 # Make sure to have H1.csv and H2.csv in the same folder as this script
-ds1 = pd.read_csv('m1u6/H1.csv')
-ds2 = pd.read_csv('m1u6/H2.csv')
+ds1 = pd.read_csv('H1.csv')
+ds2 = pd.read_csv('H2.csv')
 df = pd.concat([ds1, ds2], ignore_index=True)
 
 ### 2) Basic cleaning
