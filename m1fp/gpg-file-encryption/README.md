@@ -49,7 +49,19 @@ To encrypt a file using the Python utility:
    ```
 3. Run the test script:
    ```bash
-   bash ../scripts/test_python.sh
+   python3 <path-to-file.encryptor>/file_encryptor.py <encrypt|decrypt> <email> -i <input-file> -o <output-file>
+   ```
+
+Output of the Python execution for the same 100MB text file:
+   ```bash
+   (.venv) [~/src/uoe/assignments/m1fp]$ python3 gpg-file-encryption/python/src/encryptor/file_encryptor.py encrypt nikola@vanevski.net -i loremipsum.txt -o encrypted.bin 
+   Enter your passphrase: 
+   File 'loremipsum.txt' encrypted successfully to 'encrypted.bin'.
+   Encryption completed in 559 ms.
+   (.venv) [~/src/uoe/assignments/m1fp]$ python3 gpg-file-encryption/python/src/encryptor/file_encryptor.py decrypt nikola@vanevski.net -i encrypted.bin -o decrypted.txt
+   Enter your passphrase: 
+   File 'encrypted.bin' decrypted successfully to 'decrypted.txt'.
+   Decryption completed in 464 ms.
    ```
 
 ## Contributing
