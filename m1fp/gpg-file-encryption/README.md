@@ -1,7 +1,7 @@
-# GPG File Encryption Utility
+# File Encryption And Decryption Utility
 
 ## Overview
-This project provides utilities for encrypting files using GPG (GNU Privacy Guard) in both Java and Python. It includes classes for handling file encryption, as well as test scripts to facilitate user interaction for encryption tasks.
+This project provides utilities for encrypting files using AES-256 algorith in both Java and Python. It includes classes for handling file encryption, as well as test scripts to facilitate user interaction for encryption tasks.
 
 ## Project Structure
 The project is organized into the following directories:
@@ -18,26 +18,6 @@ The project is organized into the following directories:
 ### Prerequisites
 - Ensure you have Java (JDK) and Maven installed for the Java utility.
 - Ensure you have Python and pip installed for the Python utility.
-- Install GPG on your system.
-
-### GPG Setup on Ubuntu
-1. **Install GPG**:
-   ```bash
-   sudo apt update
-   sudo apt install gnupg
-   ```
-
-2. **Generate GPG Keys**:
-   ```bash
-   gpg --full-generate-key
-   ```
-   Follow the prompts to create your key pair. Make sure to remember the email address and passphrase you used.
-
-3. **List Your Keys**:
-   ```bash
-   gpg --list-keys
-   ```
-   This will show you the keys you have generated.
 
 ## Usage
 To encrypt a file using the Java utility:
@@ -48,7 +28,17 @@ To encrypt a file using the Java utility:
    ```
 3. Run the test script:
    ```bash
-   bash ../scripts/test_java.sh
+   java -jar target/endec.jar encrypt <email-address> -i <input file> -o <output file>
+   ```
+
+Output of the script for a 100MB text file is following:
+   ```bash
+   [~/src/uoe/assignments/m1fp/gpg-file-encryption/java]$ java -jar target/endec.jar encrypt nikola@vanevski.net -i ../../loremipsum.txt -o ../../encrypted.bin
+   Enter your passphrase: 
+   File encrypted successfully in 384 ms.
+   [~/src/uoe/assignments/m1fp/gpg-file-encryption/java]$ java -jar target/endec.jar decrypt nikola@vanevski.net -i ../../encrypted.bin -o ../../decrypted.txt
+   Enter your passphrase: 
+   File decrypted successfully in 290 ms.
    ```
 
 To encrypt a file using the Python utility:
@@ -66,4 +56,4 @@ To encrypt a file using the Python utility:
 Feel free to contribute to this project by submitting issues or pull requests.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the Creative Commons License.
