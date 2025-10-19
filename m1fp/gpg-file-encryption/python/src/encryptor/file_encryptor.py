@@ -1,4 +1,8 @@
-import gnupg
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+import secrets
 import os
 import argparse
 import sys
@@ -11,43 +15,62 @@ class FileEncryptor:
         self.email = email
         self.passphrase = passphrase
 
+    def _derive_key(self):
+        # Use email as salt (matching Java implementation)
+        salt = self.email.encode('utf-8')
+        
+        # Create key using PBKDF2 with HMAC-SHA256 (matching Java parameters)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,  # 256 bits
+            salt=salt,
+            iterations=65536,
+            backend=default_backend()
+        )
+        key = kdf.derive(self.passphrase.encode('utf-8'))
+        return key
+
     def encrypt_file(self, input_file, output_file):
-        # Encrypt the specified input file and save it to the output file
+        try:
+            # Generate key from passphrase
+            key = self._derive_key()
+            
+            # Generate random IV (16 bytes for AES)
+            iv = secrets.token_bytes(16)
+            
+            # Create AES cipher in CBC mode with PKCS7 padding
+            cipher = Cipher(
+                algorithms.AES(key),
+                modes.CBC(iv),
+                backend=default_backend()
+            )
+            encryptor = cipher.encryptor()
 
-        # Create a GPG object
-        gpg = gnupg.GPG()
+            # Read input file and encrypt
+            with open(input_file, 'rb') as f_in:
+                file_data = f_in.read()
+                
+            # Encrypt the data
+            padded_data = self._pad_data(file_data)
+            encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
 
-        # Check if the key already exists
-        key_list = gpg.list_keys()
-        if not any(key['email'] == self.email for key in key_list):
-            raise ValueError("No GPG key found for the provided email.")
+            # Write IV and encrypted data to output file
+            with open(output_file, 'wb') as f_out:
+                f_out.write(iv)  # Write IV first (16 bytes)
+                f_out.write(encrypted_data)
 
-        # Read the input file
-        with open(input_file, 'rb') as f:
-            file_data = f.read()
+            print(f"File '{input_file}' encrypted successfully to '{output_file}'.")
+            
+        except Exception as e:
+            raise Exception(f"Encryption failed: {str(e)}")
 
-        # Encrypt the file data
-        encrypted_data = gpg.encrypt(file_data, recipients=self.email, passphrase=self.passphrase)
+    def _pad_data(self, data):
+        # PKCS7 padding
+        block_size = algorithms.AES.block_size // 8
+        padding_length = block_size - (len(data) % block_size)
+        padding = bytes([padding_length] * padding_length)
+        return data + padding
 
-        # Check if the encryption was successful
-        if not encrypted_data.ok:
-            raise Exception(f"Encryption failed: {encrypted_data.stderr}")
-
-        # Write the encrypted data to the output file
-        with open(output_file, 'wb') as f:
-            f.write(encrypted_data.data)
-
-        print(f"File '{input_file}' encrypted successfully to '{output_file}'.")
-
-# Example usage:
-# if __name__ == "__main__":
-#     email = input("Enter your email address: ")
-#     passphrase = input("Enter your passphrase: ")
-#     input_file = input("Enter the path to the file to encrypt: ")
-#     output_file = input("Enter the path to save the encrypted file: ")
-#     
-#     encryptor = FileEncryptor(email, passphrase)
-#     encryptor.encrypt_file(input_file, output_file)
 
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(
@@ -67,7 +90,7 @@ def main(argv=None):
         raise
 
     # Never accept passphrase from the command line
-    passphrase = getpass.getpass(prompt="Enter your GPG passphrase: ")
+    passphrase = getpass.getpass(prompt="Enter your passphrase: ")
 
     try:
         encryptor = FileEncryptor(email, passphrase)
@@ -75,6 +98,10 @@ def main(argv=None):
     except Exception as exc:
         print(f"Error: {exc}", file=sys.stderr)
         sys.exit(1)
+    finally:
+        # Clear sensitive data
+        passphrase = None
+
 
 if __name__ == "__main__":
     main()

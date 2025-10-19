@@ -17,6 +17,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+
 public class FileEncryptor {
 
     // Method to encrypt a file using AES-256-CBC with a key derived from the passphrase (email used as salt)
