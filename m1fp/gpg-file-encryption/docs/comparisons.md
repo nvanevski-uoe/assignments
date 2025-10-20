@@ -1,7 +1,7 @@
 # Comparison of Java and Python GPG File Encryption Utilities
 
 ## a) Development Models
-- **Java**: The Java utility follows an object-oriented development model. It encapsulates the file encryption logic within classes (`FileEncryptor` and `GpgUtils`), promoting code reuse and modularity.
+- **Java**: The Java utility follows an object-oriented development model. It encapsulates the file encryption logic within classes (`FileEncryptor` and `ParsedArgs`), promoting code reuse and modularity.
 - **Python**: The Python utility also adopts an object-oriented approach with the `FileEncryptor` class. However, Python's flexibility allows for a more functional style if desired, enabling developers to use functions without strict class structures.
 
 ## b) Syntax and Readability
@@ -20,4 +20,4 @@
 - **Java**: Java's security model includes a robust set of APIs for cryptography and secure communication. However, the complexity of the language can lead to potential security vulnerabilities if not managed properly.
 - **Python**: Python's libraries, such as `gnupg`, provide straightforward access to GPG functionalities. While Python is generally considered secure, developers must be cautious about using third-party libraries and ensure they are up-to-date to avoid vulnerabilities. 
 
-In conclusion, both Java and Python have their strengths and weaknesses when it comes to implementing GPG file encryption utilities. The choice between them may depend on the specific requirements of the project, the team's expertise, and the desired balance between performance and development speed.
+In conclusion, both Java and Python have their strengths and weaknesses when it comes to implementing encryption. The choice may depend on the specific requirements of the project, the team's expertise, and the desired balance between performance, maintainability and development speed.
